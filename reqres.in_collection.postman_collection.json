@@ -1,0 +1,814 @@
+{
+	"info": {
+		"_postman_id": "aca9f7c1-7bff-4bb3-9e3f-cd60865f60eb",
+		"name": "reqres.in_collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18322979",
+		"_collection_link": "https://gr-api-team-8194.postman.co/workspace/API_Testing~ab6bc6f0-d585-4ea3-ba1e-73a9003254eb/collection/18322979-aca9f7c1-7bff-4bb3-9e3f-cd60865f60eb?action=share&source=collection_link&creator=18322979"
+	},
+	"item": [
+		{
+			"name": "Get_all_users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify all users\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{domain}}/api/users?page={{page_number}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{page_number}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup_website_with_valid_data",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							" let email = \"eve.holt@reqres.in\";\r",
+							" pm.collectionVariables.set(\"emailaddress\", email)\r",
+							" \r",
+							"let passWord = \"pistol\";\r",
+							" pm.collectionVariables.set(\"password_value\", passWord)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify register functionality\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{emailaddress}}\",\r\n    \"password\": \"{{password_value}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/register",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login_website",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							" let email = \"eve.holt@reqres.in\";\r",
+							" pm.collectionVariables.set(\"emailaddress\", email)\r",
+							" \r",
+							"let passWord = \"pistol\";\r",
+							" pm.collectionVariables.set(\"password_value\", passWord)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"let response = pm.response.json()\r",
+							"let token_variable = response.token \r",
+							"pm.collectionVariables.set(\"token_value\", token_variable)\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify login functionality\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{emailaddress}}\",\r\n    \"password\": \"{{password_value}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/login",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let name = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"pm.collectionVariables.set(\"username\", name)\r",
+							"\r",
+							"let job = pm.variables.replaceIn('{{$randomJobTitle}}')\r",
+							"pm.collectionVariables.set(\"job_title\", job)\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"let user_id = jsonData.id;\r",
+							"pm.collectionVariables.set(\"userid\", user_id)\r",
+							"\r",
+							"// verify that name is correct \r",
+							"let requestBody = JSON.parse(pm.request.body);\r",
+							"\r",
+							"let name_request =requestBody.name;\r",
+							"let name_response = jsonData.name;\r",
+							"\r",
+							"pm.test(\"Verify name is correct\", function () {\r",
+							"    pm.expect(name_response).to.eql(name_request);\r",
+							"});\r",
+							"// verify that job is correct \r",
+							"let job_request =requestBody.job;\r",
+							"let job_response = jsonData.job;\r",
+							"pm.test(\"Verify job is correct\", function(){\r",
+							"    pm.expect(job_response).to.eql(job_request)\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{username}}\",\r\n    \"job\": \"{{job_title}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/users",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_single_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"let id_response = jsonData.data.id.toString()\r",
+							"\r",
+							"let id_request = pm.collectionVariables.get(\"userid_value\")\r",
+							"\r",
+							"pm.test(\"Verify user id \", function () {\r",
+							"\r",
+							"    pm.expect(id_response).to.eql(id_request)});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/users/{{userid_value}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userid_value}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_user_not_valid_data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify user with not valid id\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/users/asdfg",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"asdfg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update_user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let name = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"pm.collectionVariables.set(\"username\", name)\r",
+							"\r",
+							"let job = pm.variables.replaceIn('{{$randomJobTitle}}')\r",
+							"pm.collectionVariables.set(\"job_title\", job)\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"// verify that name is correct \r",
+							"let requestBody = JSON.parse(pm.request.body);\r",
+							"\r",
+							"let name_request =requestBody.name;\r",
+							"let name_response = jsonData.name;\r",
+							"\r",
+							"pm.test(\"Verify name is correct\", function () {\r",
+							"    pm.expect(name_response).to.eql(name_request);\r",
+							"});\r",
+							"// verify that job is correct \r",
+							"let job_request =requestBody.job;\r",
+							"let job_response = jsonData.job;\r",
+							"pm.test(\"Verify job is correct\", function(){\r",
+							"    pm.expect(job_response).to.eql(job_request)\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{username}}\",\r\n    \"job\": \"{{job_title}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/users/{{userid_value}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userid_value}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_single_user_after_put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"let id_response = jsonData.data.id.toString()\r",
+							"\r",
+							"let id_request = pm.collectionVariables.get(\"userid_value\")\r",
+							"\r",
+							"pm.test(\"Verify user id \", function () {\r",
+							"\r",
+							"    pm.expect(id_response).to.eql(id_request)});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/users/{{userid_value}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userid_value}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Partial_update_user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let name = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							"pm.collectionVariables.set(\"username\", name)\r",
+							"\r",
+							"let job = pm.variables.replaceIn('{{$randomJobTitle}}')\r",
+							"pm.collectionVariables.set(\"job_title\", job)\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"// verify that name is correct \r",
+							"let requestBody = JSON.parse(pm.request.body);\r",
+							"\r",
+							"let name_request =requestBody.name;\r",
+							"let name_response = jsonData.name;\r",
+							"\r",
+							"pm.test(\"Verify name is correct\", function () {\r",
+							"    pm.expect(name_response).to.eql(name_request);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"name\": \"{{username}}\",\r\n    \"job\": \"{{job_title}}\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/users/{{userid_value}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userid_value}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_single_user_after_patch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"let id_response = jsonData.data.id.toString()\r",
+							"\r",
+							"let id_request = pm.collectionVariables.get(\"userid_value\")\r",
+							"\r",
+							"pm.test(\"Verify user id \", function () {\r",
+							"\r",
+							"    pm.expect(id_response).to.eql(id_request)});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/users/{{userid_value}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userid_value}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delet_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify user delete functional\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{domain}}/api/users/{{userid}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_single_user_after_delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify user is deleted\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{domain}}/api/users/{{userid}}",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const newReq = {\r",
+					"    url: 'https://reqres.in/api/login',\r",
+					"    method: 'POST',\r",
+					"    header: {\r",
+					"    'Content-Type': 'application/json'\r",
+					"  },\r",
+					"    body: {\r",
+					"        mode: 'raw',\r",
+					"        raw: JSON.stringify(\r",
+					"           {\r",
+					"               \"username\" : \"eve.holt@reqres.in\",\r",
+					"               \"password\" : \"cityslicka\"\r",
+					"            }\r",
+					"         )\r",
+					"    }\r",
+					"};\r",
+					"pm.sendRequest(newReq, (error, response) => {\r",
+					"  var response = response.json();\r",
+					"  pm.collectionVariables.set(\"token\", response.token)\r",
+					"});\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "job_title",
+			"value": ""
+		},
+		{
+			"key": "emailaddress",
+			"value": "eve.holt@reqres.in",
+			"type": "string"
+		},
+		{
+			"key": "password_value",
+			"value": "pistol",
+			"type": "string"
+		},
+		{
+			"key": "page_number",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "token_value",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "userid",
+			"value": ""
+		},
+		{
+			"key": "userid_value",
+			"value": "2",
+			"type": "string"
+		}
+	]
+}
